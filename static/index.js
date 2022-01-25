@@ -194,12 +194,21 @@ let _ttreg = / t{1,2}(\d+)/,
 
 
 let last = 0;
+let flag = 0;
 
 function refreshGameLayer(box, loop, offset) {
     let i = last + (loop ? 0 : 4);
-    ++last;
-    if (last == 4) {
-        last = 0;
+    if (flag == 0) {
+        ++last;
+        if (last == 3) {
+            flag = 1;
+        }
+    }
+    else {
+        --last;
+        if (last == 0) {
+            flag = 0;
+        }
     }
     for (let j = 0; j < box.children.length; j++) {
         let r = box.children[j],
@@ -218,9 +227,17 @@ function refreshGameLayer(box, loop, offset) {
             r.notEmpty = true;
             if (j < box.children.length - 4) {
                 i = (Math.floor(j / 4) + 1) * 4 + last;
-                last++;
-                if (last == 4) {
-                    last = 0;
+                if (flag == 0) {
+                    ++last;
+                    if (last == 3) {
+                        flag = 1;
+                    }
+                }
+                else {
+                    --last;
+                    if (last == 0) {
+                        flag = 0;
+                    }
                 }
             }
         } else {
